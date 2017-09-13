@@ -39,6 +39,7 @@ gem 'devise'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'paperclip', '~> 4.1'
+gem 'aws-sdk', '~> 1.6' # file upload to s3
 gem 'rails_12factor', group: :production
 
 group :development, :test do
