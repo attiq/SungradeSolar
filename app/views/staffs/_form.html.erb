@@ -1,0 +1,71 @@
+<%= form_for(@staff, url: staffs_path(@staff), html: {:multipart => true}) do |f| %>
+    <% if @staff.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@staff.errors.count, "error") %> prohibited this staff from being saved:</h2>
+
+          <ul>
+            <% @staff.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :email %><br>
+      <%= f.text_field :email %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %><br>
+      <%= f.password_field :password %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br>
+      <%= f.password_field :password_confirmation %>
+    </div>
+
+    <%= f.hidden_field :role_name, :value => "staff" %>
+
+    <% @staff.profile ||= Profile.new %>
+
+    <%= f.fields_for :profile do |ff| %>
+
+        <div class="field">
+          <label>Company</label><br>
+          <%= ff.select :company_id, options_for_select(Company.all.map { |c| [c.name, c.id] }) %>
+        </div>
+
+        <div class="field">
+          <%= ff.label :employeeID %><br>
+          <%= ff.text_field :employeeID %>
+        </div>
+
+        <div class="field">
+          <%= ff.label :name %><br>
+          <%= ff.text_field :name %>
+        </div>
+
+        <div class="field">
+          <%= ff.label :phone %><br>
+          <%= ff.text_field :phone %>
+        </div>
+        <div class="field">
+          <%= ff.label :role %><br>
+          <%= ff.select :role, options_for_select(["Manager", "Sales", "Finance", "Installation"]) %>
+        </div>
+
+
+        <div class="field">
+          <%= ff.label :avatar %><br>
+          <%= ff.file_field :avatar %>
+        </div>
+
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit "Save", :class => "smallBtn" %>
+    </div>
+
+<% end %>

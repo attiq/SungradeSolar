@@ -1,0 +1,15 @@
+<div class="topBanner">
+  <div class="logo">
+    <%= image_tag("logo.png") %>
+  </div>
+
+  <div class="topRightNav">
+    <div class="topLinks">
+      <% if user_signed_in? %>
+          <span class="gray"><%= current_user.email %></span>
+          | <%= link_to "Sign Out", signout_path %></div>
+      <% else %>
+          <%= link_to "Register As Customer", signup_path %></div>
+      <% end %>
+      </div>
+</div>

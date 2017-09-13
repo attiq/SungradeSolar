@@ -1,0 +1,7 @@
+<div class="wrapper">
+  <% [:alert, :notice].select { |type| !flash[type].blank? }.each do |type| %>
+      <div class="<%= type.to_s == 'alert' ? 'alert' : 'notice' %>">
+        <p><%= flash[type] %></p>
+      </div>
+  <% end %>
+</div>

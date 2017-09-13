@@ -1,0 +1,73 @@
+<h2>Register As Customer</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div class="field">
+      <%= f.label :email %><br/>
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password %>
+      <% if @minimum_password_length %>
+          <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %><br/>
+      <%= f.password_field :password, autocomplete: "off" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password_confirmation %><br/>
+      <%= f.password_field :password_confirmation, autocomplete: "off" %>
+    </div>
+
+    <%= f.hidden_field :role_name, :value => "customer" %>
+
+    <% resource.profile ||= Profile.new %>
+
+    <%= f.fields_for :profile do |ff| %>
+
+        <div class="field">
+          <%= ff.label :sgsID %><br>
+          <%= ff.text_field :sgsID %>
+        </div>
+
+        <div class="field">
+          <%= ff.label :name %><br>
+          <%= ff.text_field :name %>
+        </div>
+
+        <div class="field">
+          <%= ff.label :phone %><br>
+          <%= ff.text_field :phone %>
+        </div>
+        <div class="field">
+          <%= ff.label :stage %><br>
+          <%= ff.select :stage, options_for_select(["QL", "FC", "Pending", "Final"]) %>
+        </div>
+        <div class="field">
+          <%= ff.label :signature %><br>
+          <%= ff.text_area :signature %>
+        </div>
+
+        <div class="field">
+          <%= ff.label :avatar %><br>
+          <%= ff.file_field :avatar %>
+        </div>
+
+        <% 3.times { resource.profile.assets.build } %>
+        <div class="field">
+          <label>Elitricity Bills</label><br>
+          <%= ff.fields_for :assets, resource.profile.assets do |a| %>
+              <label></label><br>
+              <%= a.file_field :bill %>
+          <% end %>
+        </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit "Sign up", :class => "smallBtn" %>
+    </div>
+<% end %>
+
+<%= render "users/shared/links" %>

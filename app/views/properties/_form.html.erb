@@ -1,0 +1,29 @@
+<%= form_for(@property) do |f| %>
+    <% if @property.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@property.errors.count, "error") %> prohibited this property from being saved:</h2>
+
+          <ul>
+            <% @property.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <label>Customer</label><br>
+      <%= f.select :user_id, options_for_select(User.customers.map { |u| [u.profile.name, u.id] }) %>
+    </div>
+    <div class="field">
+      <%= f.label :name %><br>
+      <%= f.text_field :name %>
+    </div>
+    <div class="field">
+      <%= f.label :address %><br>
+      <%= f.text_field :address %>
+    </div>
+    <div class="actions">
+      <%= f.submit "Save", :class => "smallBtn" %>
+    </div>
+<% end %>

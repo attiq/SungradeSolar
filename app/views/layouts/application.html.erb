@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SungradeSolar2</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="mainContainer"></div>
+<div class="mainholder">
+  <div class="center">
+    <%= render :partial => "layouts/header" %>
+    <div id="flash">
+      <%= render :partial => 'layouts/flash', :object => flash %>
+    </div>
+    <div class="center">
+      <div style="margin-top:20px; float:left;">
+        <% if user_signed_in? && current_user.admin? %>
+            <div class="leftContainer">
+              <%= render :partial => "layouts/links" %>
+            </div>
+        <% end %>
+        <div class="rightContainer">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+    <%= render :partial => "layouts/footer" %>
+  </div>
+</div>
+</body>
+</html>
