@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
   private
 
   def send_welcome_email_to_user
-    UserMailer.welcome(self.id).deliver if self.customer?
+    UserMailer.welcome(self.id).deliver if self.new_record? && self.customer?
   end
 
   def set_role
