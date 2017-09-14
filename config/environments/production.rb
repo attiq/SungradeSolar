@@ -92,7 +92,7 @@ Rails.application.configure do
   # S3 credentials
   config.paperclip_defaults = {
       :storage => :s3,
-      :s3_host_name => 's3-us-east-2.amazonaws.com',
+      :s3_host_name => 's3-us-east-1.amazonaws.com',
       :s3_credentials => {
           :bucket => 'sungradesolar',
           :access_key_id => 'AKIAIRMIGO4XNW5PYQKA',
