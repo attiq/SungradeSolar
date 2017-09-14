@@ -15,6 +15,7 @@ class StaffsController < ApplicationController
   # GET /staffs/1
   # GET /staffs/1.json
   def show
+    @appointments = current_user.fetch_appointments
   end
 
   # GET /staffs/new

@@ -443,6 +443,12 @@ a {
   width: 695px;
 }
 
+.fullContainer {
+  float: left;
+  padding: 0px 25px;
+  width: 100%;
+}
+
 .inrHeading1 {
   color: #2C6DCE;
   float: left;
@@ -862,10 +868,12 @@ a {
 
 .notice {
   float: left;
-  width: 97%;
   background: lightGreen;
+  margin-left: 24px;
   padding: 5px 10px;
-  border: 1px solid darkGreen;
+  width: 95%;
+  border-radius: 5px;
+  margin-top: 5px;
   p {
     float: left;
     width: 100%;
@@ -874,10 +882,12 @@ a {
 
 .alert {
   float: left;
-  width: 97%;
-  background: lightYellow;
+  margin-left: 24px;
   padding: 5px 10px;
-  border: 1px solid brown;
+  width: 95%;
+  border-radius: 5px;
+  margin-top: 5px;
+  background-color: pink;
   p {
     float: left;
     width: 98%;
@@ -888,7 +898,7 @@ a {
   float: right;
 }
 
-.field_with_errors input{
+.field_with_errors input {
   border-color: red;
 }
 
@@ -899,6 +909,7 @@ a {
   margin-top: 20px;
   padding: 5px 10px;
   width: 95%;
+  margin-bottom: 20px;
 }
 
 #error_explanation .close-errors {
@@ -994,4 +1005,65 @@ a {
 .fleft {
   float: left;
   clear: both;
+}
+
+.round-box {
+  box-shadow: 0px 0px 10px 0px #333333;
+  border-radius: 5px;
+  width: 904px;
+  padding: 10px;
+  background-color: #fff;
+  float: left;
+}
+
+.picture {
+  float: left;
+  margin: 10px;
+}
+
+.details {
+  float: left;
+  margin-top: 10px;
+  label {
+    margin: 10px 5px 5px 0px;
+    float: left;
+    font-size: 18px;
+    clear: both;
+    font-weight: bolder;
+  }
+  span {
+    margin: 10px 5px 5px 0px;
+    float: left;
+    font-size: 18px;
+  }
+}
+
+.form-group select {
+  background: #ffffff none repeat scroll 0 0;
+  border: 1px solid #999999;
+  height: 34px;
+  margin-top: 0px;
+  padding: 4px;
+  width: 100%;
+}
+
+.date_select select {
+  width: 23% !important;
+}
+
+.appBox {
+  border-radius: 5px;
+  width: 904px;
+  padding: 10px;
+  float: left;
+  margin-top: 10px;
+}
+
+.staff_select select {
+  height: auto !important;
+}
+
+.btn-danger {
+  background: transparent !important;
+  background-color: #d9534f !important;
 }

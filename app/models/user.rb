@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :profile
 
   has_many :properties
+  has_many :customer_appointments, :foreign_key => "user_id", class_name: "Appointment"
+
+  has_many :appointment_users
+  has_many :appointments, :through => :appointment_users
 
   after_save :set_role, :send_welcome_email_to_user
 
@@ -20,6 +24,14 @@ class User < ActiveRecord::Base
 
   def self.staff
     all.select { |u| u.staff? }
+  end
+
+  def self.appointment_staff(type=nil)
+    if type == "Install"
+      @staff = User.staff.select { |s| s.profile.role == 'Installation' }
+    else
+      @staff = User.staff.select { |s| s.profile.role == 'Sales' }
+    end
   end
 
   def role
@@ -42,6 +54,14 @@ class User < ActiveRecord::Base
 
   def properties_names
     properties.map { |p| p.name }.join(',')
+  end
+
+  def fetch_appointments
+    if self.customer?
+      self.customer_appointments
+    elsif self.staff?
+      self.appointments
+    end
   end
 
   private

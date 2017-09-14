@@ -1,29 +1,27 @@
-<p id="notice"><%= notice %></p>
+<h1>Appointments</h1>
+<div id="appointments">
+  <%= render "calandar" %>
+</div>
+<br/>
+<%= link_to 'New Event', new_appointment_path, :id => 'new-appointment', :class => 'btn btn-default pull-right' %>
 
-<h1>Listing Appointments</h1>
+<script>
 
-<table>
-  <thead>
-    <tr>
-      <th>Customer</th>
-      <th>App type</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+    $(document).ready(function () {
 
-  <tbody>
-    <% @appointments.each do |appointment| %>
-      <tr>
-        <td><%= appointment.customer_id %></td>
-        <td><%= appointment.app_type %></td>
-        <td><%= link_to 'Show', appointment %></td>
-        <td><%= link_to 'Edit', edit_appointment_path(appointment) %></td>
-        <td><%= link_to 'Destroy', appointment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        $("#new-appointment").click(function () {
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'get',
+                dataType: 'html',
+                processData: false,
+                success: function (data) {
+                    $("#myModal").modal();
+                    $('#myModal').html(data);
+                }
+            });
+            return false;
+        });
+    });
 
-<br>
-
-<%= link_to 'New Appointment', new_appointment_path %>
+</script>

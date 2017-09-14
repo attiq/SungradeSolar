@@ -7,6 +7,10 @@
     <div class="topLinks">
       <% if user_signed_in? %>
           <span class="gray"><%= current_user.email %></span>
+          <% unless current_user.admin? %>
+              | <%= link_to "Profile", current_user.customer? ? customer_path(current_user) : staff_path(current_user) %>
+              | <%= link_to "Appointments", appointments_path %>
+          <% end %>
           | <%= link_to "Sign Out", signout_path %></div>
       <% else %>
           <%= link_to "Register As Customer", signup_path %></div>

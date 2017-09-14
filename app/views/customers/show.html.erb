@@ -1,29 +1,33 @@
-<p>
-  <strong>Name:</strong>
-  <%= @customer.profile.name %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @customer.email %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @customer.profile.phone %>
-</p>
-
-<p>
-  <strong>Sgsid:</strong>
-  <%= @customer.profile.sgsID %>
-</p>
-
-<p>
-  <strong>Signature:</strong>
-  <%= @customer.profile.signature %>
-</p>
-
-<p>
-  <strong>Stage:</strong>
-  <%= @customer.profile.stage %>
-</p>
+<div class="round-box">
+  <div class="picture">
+    <%= image_tag @customer.profile.avatar.url(:medium) if @customer.profile.avatar %>
+  </div>
+  <div class="details">
+    <label>Name:</label><span><%= @customer.profile.name %></span>
+    <label>Email:</label> <span><%= @customer.email %></span>
+    <label>SgsID:</label> <span><%= @customer.profile.sgsID %></span>
+    <label>Stage:</label> <span><%= @customer.profile.stage %></span>
+    <label>Properties:</label> <span><%= @customer.properties_names %></span>
+    <label>Electricity Bills:</label>
+    <span>
+      <% if @customer.profile.assets.present? %>
+          <% @customer.profile.assets.each do |asset| %>
+          <%= link_to asset.bill_file_name, asset.bill.url, :target => '_blank' %> </br>
+          <% end %>
+      <% end %>
+    </span>
+  </div>
+</div>
+<% if @appointments.present? %>
+    <% @appointments.each do |appointment| %>
+        <div class="appBox" style="background-color: <%= appointment.users.blank? ? 'pink' : appointment.app_type == 'FollowUp' ? '#a7cef5' : 'lightgreen' %>">
+          <div class="details">
+            <span><%= appointment.title %></span>
+            <label>Scheduled At:</label> <span><%= appointment.scheduled_at.strftime("%m/%d/%Y at %I:%M%p")  %></span>
+            <% if appointment.users.present? %>
+                <label>Staff:</label> <span><%= appointment.staff_names %></span>
+            <% end %>
+          </div>
+        </div>
+    <% end %>
+<% end %>

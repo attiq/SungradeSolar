@@ -1,25 +1,81 @@
-<%= form_for(@appointment) do |f| %>
-  <% if @appointment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@appointment.errors.count, "error") %> prohibited this appointment from being saved:</h2>
+<div class="modal-dialog">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <%= form_for(@appointment, :html => {role: 'form', :id => "appointment_form"}) do |f| %>
+        <div class="modal-header" style="padding:12px 50px;">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4>New Appointment</h4>
+        </div>
+        <div class="modal-body" style="padding:40px 50px;">
+          <div id="errors"></div>
+          <div class="form-group">
+            <label>Title</label><br>
+            <%= f.text_field :title, :class => "form-control" %>
+          </div>
+          <% if current_user.customer? %>
+              <%= f.hidden_field :app_type, :value => "FollowUp" %>
+              <%= f.hidden_field :user_id, :value => current_user.id %>
+          <% else %>
+              <div class="form-group">
+                <label>Customer</label><br>
+                <%= f.select :user_id, User.customers.collect { |c| [c.profile.name, c.id] } %>
+              </div>
+              <div class="form-group">
+                <label>Appointment Type</label><br>
+                <%= f.select :app_type, options_for_select(["FollowUp", "Install"], @appointment.app_type) %>
+              </div>
+              <div id="staff">
+                <%= render "staff" %>
+              </div>
 
-      <ul>
-      <% @appointment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+          <% end %>
+          <div class="form-group date_select">
+            <label>Scheduled At</label><br>
+            <%= datetime_select("appointment", "scheduled_at", ampm: true, :discard_minute => true, :class => "form-control") %>
+          </div>
 
-  <div class="field">
-    <%= f.label :customer_id %><br>
-    <%= f.number_field :customer_id %>
+        </div>
+        <div class="modal-footer">
+          <a class='btn btn-default pull-left' data-dismiss="modal">Cancel</a>
+          <a class='btn btn-default pull-right' id="saveApp">Save</a>
+        </div>
+    <% end %>
   </div>
-  <div class="field">
-    <%= f.label :app_type %><br>
-    <%= f.text_field :app_type %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#appointment_app_type").change(function () {
+            $.ajax({
+                url: 'appointments/get_staff?app_type=' + $(this).val(),
+                type: 'get',
+                dataType: 'html',
+                processData: false,
+                success: function (data) {
+                    $('#staff').html(data);
+                }
+            });
+        });
+
+        $("#saveApp").click(function () {
+            var form = $("#appointment_form");
+            $.post(form.attr("action"), form.serialize(), function (response) {
+                if (response.success) {
+                    $('#myModal').modal('hide');
+                    $("#appointments").html(response.html);
+                    $("#flash").html(response.flash);
+                    setTimeout(function () {
+                        $('.wrapper').fadeOut()
+                    }, 3000);
+                } else {
+                    $("#errors").html(response.html);
+                }
+            }, "json");
+            return false;
+        });
+    });
+
+</script>

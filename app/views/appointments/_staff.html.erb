@@ -1,0 +1,4 @@
+<div class="form-group staff_select">
+  <label>Staff</label><br>
+  <%= select_tag 'staff_ids[]', options_for_select(@staff.map { |s| [s.profile.name, s.id] }), :multiple => true %>
+</div>

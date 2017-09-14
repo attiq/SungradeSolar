@@ -1,29 +1,26 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @staff.name %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @staff.email %>
-</p>
-
-<p>
-  <strong>Phone:</strong>
-  <%= @staff.phone %>
-</p>
-
-<p>
-  <strong>Employeeid:</strong>
-  <%= @staff.employeeID %>
-</p>
-
-<p>
-  <strong>Company:</strong>
-  <%= @staff.company_id %>
-</p>
-
-<%= link_to 'Edit', edit_staff_path(@staff) %> |
-<%= link_to 'Back', staffs_path %>
+<div class="round-box">
+  <div class="picture">
+    <%= image_tag @staff.profile.avatar.url(:medium) if @staff.profile.avatar %>
+  </div>
+  <div class="details">
+    <label>Name:</label><span><%= @staff.profile.name %></span>
+    <label>Email:</label> <span><%= @staff.email %></span>
+    <label>Phone:</label> <span><%= @staff.profile.phone %></span>
+    <label>Company:</label> <span><%= @staff.profile.company.name %></span>
+    <label>EmployeeID:</label> <span><%= @staff.profile.employeeID %></span>
+    <label>Role:</label> <span><%= @staff.profile.role %></span>
+  </div>
+</div>
+<% if @appointments.present? %>
+    <% @appointments.each do |appointment| %>
+        <div class="appBox" style="background-color: <%= appointment.users.blank? ? 'pink' : appointment.app_type == 'FollowUp' ? '#a7cef5' : 'lightgreen' %>">
+          <div class="details">
+            <span><%= appointment.title %></span>
+            <label>Scheduled At:</label> <span><%= appointment.scheduled_at.strftime("%m/%d/%Y at %I:%M%p") %></span>
+            <% if appointment.users.present? %>
+                <label>Staff:</label> <span><%= appointment.staff_names %></span>
+            <% end %>
+          </div>
+        </div>
+    <% end %>
+<% end %>
