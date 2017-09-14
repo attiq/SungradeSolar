@@ -16,7 +16,8 @@ class User < ActiveRecord::Base
   has_many :appointment_users
   has_many :appointments, :through => :appointment_users
 
-  after_save :set_role, :send_welcome_email_to_user
+  after_save :set_role
+  after_create :send_welcome_email_to_user
 
   def self.customers
     all.select { |u| u.customer? }
@@ -67,7 +68,7 @@ class User < ActiveRecord::Base
   private
 
   def send_welcome_email_to_user
-    UserMailer.welcome(self.id).deliver if self.new_record? && self.customer?
+    UserMailer.welcome(self.id).deliver if self.role_name == "customer"
   end
 
   def set_role
