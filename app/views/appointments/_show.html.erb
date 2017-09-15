@@ -1,0 +1,64 @@
+<div class="modal-dialog">
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header" style="padding:12px 50px;">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4><span><%= @appointment.title %></span></h4>
+    </div>
+    <div class="modal-body" style="padding:40px 50px;overflow:hidden;">
+      <div class="details">
+        <label>Customer:</label><span><%= @appointment.user.profile.name %></span>
+        <label>Schedulet At:</label><span><%= @appointment.scheduled_at %></span>
+        <label>Appointment Type:</label><span><%= @appointment.app_type %></span>
+        <label>Staff:</label><span><%= @appointment.staff_names %></span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <%= link_to 'Delete', @appointment, method: :delete, :class => 'btn btn-danger pull-left', :id => "delApp" %>
+      <%= link_to 'Edit', edit_appointment_path(@appointment), :class => 'btn btn-default pull-right', :id => "editApp" %>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#delApp").click(function () {
+            if (confirm('Are you sure ?')) {
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: 'delete',
+                    dataType: 'json',
+                    processData: false,
+                    success: function (response) {
+                        $("#eventModal").modal("hide");
+                        $("#appointments").html(response.html);
+                        $("#flash").html(response.flash);
+                        setTimeout(function () {
+                            $('.wrapper').fadeOut()
+                        }, 3000);
+                    }
+                });
+            }
+            return false;
+        });
+
+        $("#editApp").click(function () {
+            $.ajax({
+                url: $(this).attr('href'),
+                type: 'get',
+                dataType: 'html',
+                processData: false,
+                success: function (data) {
+                    $("#eventModal").modal("hide");
+                    $("#myModal").modal();
+                    $('#myModal').html(data);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>

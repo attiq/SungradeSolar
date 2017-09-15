@@ -17,6 +17,7 @@ class AppointmentsController < ApplicationController
   # GET /appointments/1
   # GET /appointments/1.json
   def show
+    render :partial => "appointments/show", :layout => false
   end
 
   # GET /appointments/new
@@ -34,6 +35,8 @@ class AppointmentsController < ApplicationController
 
   # GET /appointments/1/edit
   def edit
+    @staff = User.appointment_staff(@appointment.app_type)
+    render :partial => "appointments/form", :layout => false
   end
 
   # POST /appointments
@@ -94,25 +97,10 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1.json
   def destroy
     @appointment.destroy
-    respond_to do |format|
-      format.html { redirect_to appointments_url, notice: 'Appointment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
-  end
-
-  def delete_app
-    @appointment = Appointment.find(params[:app_id])
-    @appointment.destroy
     flash[:notice]= 'Appointment was successfully deleted.'
     render :json => {:success => true,
                      :html => render_to_string(:partial => "/appointments/calandar"),
                      :flash => render_to_string(:partial => "layouts/flash")}.to_json
-  end
-
-  def edit_app
-    @appointment = Appointment.find(params[:app_id])
-    @staff = User.appointment_staff(@appointment.app_type)
-    render :partial => "appointments/form", :layout => false
   end
 
   private

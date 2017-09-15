@@ -16,8 +16,6 @@ Rails.application.routes.draw do
 
   resources :appointments do
     get :get_staff, :on => :collection
-    get :delete_app, :on => :collection
-    get :edit_app, :on => :collection
   end
   resources :properties
   resources :companies

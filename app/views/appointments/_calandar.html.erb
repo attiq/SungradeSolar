@@ -2,7 +2,6 @@
 
 <script>
 
-
     $(document).ready(function () {
 
         $('#calendar').fullCalendar({
@@ -15,14 +14,16 @@
             events: '/appointments.json',
             eventRender: function (event, element) {
                 element.click(function () {
-                    $("#eventModal").modal();
-                    $("#app_id").val(event.id);
-                    $("#title").html(event.title);
-                    $("#customer").html(event.customer_name);
-                    $("#start").html(moment(event.start).format('MMM Do h:mm A'));
-                    $("#customer").html(event.customer);
-                    $("#app_type").html(event.app_type);
-                    $("#staff").html(event.staff);
+                    $.ajax({
+                        url: 'appointments/' + event.id,
+                        type: 'get',
+                        dataType: 'html',
+                        processData: false,
+                        success: function (data) {
+                            $("#eventModal").modal();
+                            $('#eventModal').html(data);
+                        }
+                    });
                     return false;
                 })
 
@@ -99,42 +100,6 @@
                 $('#calendar').fullCalendar('option', 'aspectRatio', $('#calendar').fullCalendar('option', 'aspectRatio'));
             }
         });
-
-        $("#delApp").click(function () {
-            if (confirm('Are you sure ?')) {
-                $.ajax({
-                    url: "appointments/delete_app?app_id=" + $("#app_id").val(),
-                    type: 'get',
-                    dataType: 'json',
-                    processData: false,
-                    success: function (response) {
-                        $("#eventModal").modal("hide");
-                        $("#appointments").html(response.html);
-                        $("#flash").html(response.flash);
-                        setTimeout(function () {
-                            $('.wrapper').fadeOut()
-                        }, 3000);
-                    }
-                });
-            }
-            return false;
-        });
-
-        $("#editApp").click(function () {
-            $.ajax({
-                url: "appointments/edit_app?app_id=" + $("#app_id").val(),
-                type: 'get',
-                dataType: 'html',
-                processData: false,
-                success: function (data) {
-                    $("#eventModal").modal("hide");
-                    $("#myModal").modal();
-                    $('#myModal').html(data);
-                }
-            });
-            return false;
-        });
-
     });
 
 
