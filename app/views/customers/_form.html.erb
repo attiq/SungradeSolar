@@ -31,7 +31,7 @@
     <% @customer.profile ||= Profile.new %>
 
     <%= f.fields_for :profile do |ff| %>
-
+        <%= ff.hidden_field :role_name, :value => "customer" %>
         <div class="field">
           <%= ff.label :sgsID %><br>
           <%= ff.text_field :sgsID %>

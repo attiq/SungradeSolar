@@ -9,12 +9,16 @@
   <title></title>
 </head>
 <body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="min-width: 100%;margin: 0;padding: 0;-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;width: 100% !important;">
-<h1>Welcome <%= @customer.profile.name %>,</h1>
-<br/>
+<h3>Welcome <%= @customer.profile.name %>,</h3>
 
-<p>Sungrade​ ​ Solar​ ​ Successful​ ​ Sign​ ​ Up​ ​ for​ ​ <%= @customer.profile.name %></p>
-<br/>
-
+<p>Sungrade​ Solar​ Successful​ Sign​ Up​ for​ <%= @customer.profile.name %></p>
+<% if @password.present? %>
+    <span><b>Email:</b>&nbsp;<%= @customer.email %></span>
+    <br/>
+    <span><b>Password:</b>&nbsp;<%= @password %></span>
+    <br/>
+    <br/>
+<% end %>
 <%= link_to "Visit Sungrade Solar", customer_url(@customer) %>
 <br/>
 </body>

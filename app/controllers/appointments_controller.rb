@@ -1,8 +1,10 @@
 class AppointmentsController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authenticate_staff
-  before_action :authenticate_customer
+
+  before_action do
+    permission_denied if current_user.admin?
+  end
 
   before_action :set_appointment, only: [:show, :edit, :update, :destroy]
 

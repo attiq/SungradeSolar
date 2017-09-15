@@ -2,8 +2,15 @@ class StaffsController < ApplicationController
 
 
   before_action :authenticate_user!
-  before_action :authenticate_admin, except: [:show]
-  before_action :authenticate_staff, only: [:show]
+
+  before_action :except => [:show] do
+    permission_denied unless current_user.admin?
+  end
+
+  before_action :only => [:show] do
+    permission_denied unless current_user.staff?
+  end
+
   before_action :set_staff, only: [:show, :destroy]
 
   # GET /staffs
@@ -27,6 +34,7 @@ class StaffsController < ApplicationController
   # POST /staffs.json
   def create
     @staff = User.new(user_params)
+    @staff.unhash_passowrd = user_params[:password]
 
     respond_to do |format|
       if @staff.save
@@ -55,8 +63,8 @@ class StaffsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(
-        :email, :password, :password_confirmation, :role_name,
-        profile_attributes: [:name, :phone, :employeeID, :company_id, :role, :avatar]
+        :email, :password, :password_confirmation, :role_name, :unhash_passowrd,
+        profile_attributes: [:name, :phone, :employeeID, :company_id, :role, :role_name, :avatar]
     )
   end
 end

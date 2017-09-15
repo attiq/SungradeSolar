@@ -57,4 +57,15 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def after_inactive_sign_up_path_for(resource)
   #   super(resource)
   # end
+
+  private
+
+  def sign_up_params
+    params.require(resource_name).permit(
+        :email, :password, :password_confirmation, :role_name, :unhash_passowrd,
+        profile_attributes: [:name, :phone, :sgsID, :signature, :stage, :role_name, :avatar,
+                             :assets_attributes => [:bill]]
+    )
+  end
+
 end

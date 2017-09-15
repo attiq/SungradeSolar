@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  attr_accessor :role_name
+  attr_accessor :role_name, :unhash_passowrd
 
   has_and_belongs_to_many :roles
   has_one :profile
@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   private
 
   def send_welcome_email_to_user
-    UserMailer.welcome(self.id).deliver if self.role_name == "customer"
+    UserMailer.welcome(self.id, self.unhash_passowrd).deliver if self.role_name.present?
   end
 
   def set_role

@@ -1,8 +1,14 @@
 class CustomersController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authenticate_admin, except: [:show]
-  before_action :authenticate_customer, only: [:show]
+
+  before_action :except => [:show] do
+    permission_denied unless current_user.admin?
+  end
+
+  before_action :only => [:show] do
+    permission_denied unless current_user.customer?
+  end
 
   before_action :set_customer, only: [:show, :destroy]
 
@@ -26,7 +32,9 @@ class CustomersController < ApplicationController
   # POST /customers
   # POST /customers.json
   def create
+
     @customer = User.new(user_params)
+    @customer.unhash_passowrd = user_params[:password]
 
     respond_to do |format|
       if @customer.save
@@ -55,8 +63,8 @@ class CustomersController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(
-        :email, :password, :password_confirmation, :role_name,
-        profile_attributes: [:name, :phone, :sgsID, :signature, :stage, :avatar,
+        :email, :password, :password_confirmation, :role_name, :unhash_passowrd,
+        profile_attributes: [:name, :phone, :sgsID, :signature, :stage, :role_name, :avatar,
                              :assets_attributes => [:bill]]
     )
   end

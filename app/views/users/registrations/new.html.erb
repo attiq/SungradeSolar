@@ -1,7 +1,18 @@
 <h2>Register As Customer</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= devise_error_messages! %>
+
+    <% if resource.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(resource.errors.count, "error") %> prohibited this customer from being saved:</h2>
+
+          <ul>
+            <% resource.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
 
     <div class="field">
       <%= f.label :email %><br/>
@@ -26,7 +37,7 @@
     <% resource.profile ||= Profile.new %>
 
     <%= f.fields_for :profile do |ff| %>
-
+        <%= ff.hidden_field :role_name, :value => "customer" %>
         <div class="field">
           <%= ff.label :sgsID %><br>
           <%= ff.text_field :sgsID %>

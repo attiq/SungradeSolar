@@ -7,17 +7,8 @@ class ApplicationController < ActionController::Base
     current_user.admin? ? customers_url : current_user.customer? ? customer_path(current_user) : staff_path(current_user)
   end
 
-
-  def authenticate_admin
-    current_user && current_user.admin?
-  end
-
-  def authenticate_customer
-    current_user && current_user.customer?
-  end
-
-  def authenticate_staff
-    current_user && current_user.staff?
+  def permission_denied
+    render :file => "public/401.html", :status => :unauthorized, :layout => false
   end
 
 end

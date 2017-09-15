@@ -31,7 +31,7 @@
     <% @staff.profile ||= Profile.new %>
 
     <%= f.fields_for :profile do |ff| %>
-
+        <%= ff.hidden_field :role_name, :value => "staff" %>
         <div class="field">
           <label>Company</label><br>
           <%= ff.select :company_id, options_for_select(Company.all.map { |c| [c.name, c.id] }) %>

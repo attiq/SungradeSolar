@@ -1,7 +1,11 @@
 class PropertiesController < ApplicationController
 
   before_action :authenticate_user!
-  before_action :authenticate_admin
+
+  before_action do
+    permission_denied unless current_user.admin?
+  end
+
   before_action :set_property, only: [:show, :edit, :update, :destroy]
 
   # GET /properties
@@ -65,13 +69,13 @@ class PropertiesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_property
-      @property = Property.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_property
+    @property = Property.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def property_params
-      params.require(:property).permit(:name, :address, :user_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def property_params
+    params.require(:property).permit(:name, :address, :user_id)
+  end
 end
